@@ -1,0 +1,119 @@
+<div class="row p-30">
+  <div class="col-sm-12 col-lg-6">
+    <h1>List years with multiple winners</h1>
+    <div class="col-sm-12 col-lg-12 shadow-sm p-3 mb-5 bg-white rounded shadow-sm p-3 mb-5 bg-white rounded">
+      <table class="table  ">
+        <thead>
+          <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Win Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataFilterByWinnerYear">
+            <th scope="row">{{ item.ano }}</th>
+            <td>{{ item.winners }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-lg-6">
+    <h1>Top 3 studios with winners</h1>
+    <div class="col-sm-12 col-lg-12 shadow-sm p-3 mb-5 bg-white rounded">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Win Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of top3Studios">
+            <th scope="row">{{ item.studio }}</th>
+            <td>{{ item.wins }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-lg-6">
+    <h4>Producers with longest and shortest interval between wins</h4>
+    <div class="col-sm-12 col-lg-12 shadow-sm p-3 mb-5 bg-white rounded">
+      <h4>Maximum</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Producer</th>
+            <th scope="col">Interval</th>
+            <th scope="col">Previous Year</th>
+            <th scope="col">Following Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ producerWithMaxInterval?.producer }}</td>
+            <td>{{ producerWithMaxInterval?.interval }}</td>
+            <td>{{ producerWithMaxInterval?.previousYear }}</td>
+            <td>{{ producerWithMaxInterval?.followingYear }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Minimum</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Producer</th>
+            <th scope="col">Interval</th>
+            <th scope="col">Previous Year</th>
+            <th scope="col">Following Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ producerWithMinInterval?.producer }}</td>
+            <td>{{ producerWithMinInterval?.interval }}</td>
+            <td>{{ producerWithMinInterval?.previousYear }}</td>
+            <td>{{ producerWithMinInterval?.followingYear }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-lg-6">
+    <h1>List Movie Winner by Year</h1>
+    <div class="col-sm-12 col-lg-12 shadow-sm p-3 mb-5 bg-white rounded">
+      <div class="column d-flex justify-content-center">
+        <input
+          type="number"
+          class="form-control mb-3"
+          Placeholder="Filter by year"
+          [(ngModel)]="filterByYearInput"
+          (keyup.enter)="filterYear()"
+        />
+        <button (click)="filterYear()">Search</button>
+      </div>
+      <table class="table col-sm-12">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Year</th>
+            <th scope="col">Title</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tableData?.content">
+            <th scope="row">{{ item.id }}</th>
+            <td>{{ item.year }}</td>
+            <td>{{ item.title }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+-
