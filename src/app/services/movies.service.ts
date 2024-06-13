@@ -14,7 +14,7 @@ import { MoviesIntervalResponse } from '../models/MoviesIntervalResponse.model';
   providedIn: 'root',
 })
 export class MoviesService {
-  private API_URL = environment.API_URL;
+  public API_URL = environment.API_URL;
 
   constructor(private http: HttpClient) {}
 

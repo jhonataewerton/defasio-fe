@@ -11,9 +11,10 @@ import { MoviesService } from 'src/app/services/movies.service';
   styleUrls: ['./list-movies.component.scss'],
 })
 export class ListMoviesComponent implements OnInit {
-  selectedShowWin: boolean = true;
+  selectedShowWin: string = '';
   filterByYearInput: string = '';
   page: number = 0;
+  itensPerpage: number = 10;
 
   constructor(private moviesService: MoviesService) {}
 
@@ -34,8 +35,8 @@ export class ListMoviesComponent implements OnInit {
         switchMap((res) => {
           let queryParams = new HttpParams()
             .set('page', this.page)
-            .set('size', '10')
-            .set('winner', this.selectedShowWin ? this.selectedShowWin : '')
+            .set('size', this.itensPerpage)
+            .set('winner', this.checkSelectedBox())
             .set('year', this.filterByYearInput);
 
           return this.moviesService.getMovies(queryParams);
@@ -51,6 +52,15 @@ export class ListMoviesComponent implements OnInit {
     this.filterByYearSubject$.next('');
   }
 
+  checkSelectedBox() {
+    if (this.selectedShowWin === 'y') {
+      return 'yes';
+    } else if (this.selectedShowWin === 'n') {
+      return 'no';
+    }
+    return '';
+  }
+
   setPage(page: number) {
     this.page = page;
     this.filter();
@@ -58,30 +68,16 @@ export class ListMoviesComponent implements OnInit {
 
   loadData() {
     let queryParams = new HttpParams().set('page', '0').set('size', '10');
-    this.moviesService.getMovies(queryParams).subscribe({
-      next: (res) => {
-        this.tableData = res;
-        this.filteredMovies = this.tableData.content;
-
-        // Contar os vencedores por ano
-        const winnersByYear: { [year: number]: number } = this.filteredMovies.reduce<{ [year: number]: number }>((acc, movie) => {
-          if (movie.winner) {
-            acc[movie.year] = (acc[movie.year] || 0) + 1;
-          }
-          return acc;
-        }, {});
-
-        const filteredWinnersByYear = Object.keys(winnersByYear)
-          .map(year => parseInt(year, 10))
-          .filter(year => winnersByYear[year] >= 2)
-          .reduce((acc: { [year: number]: number }, year) => {
-            acc[year] = winnersByYear[year];
-            return acc;
-          }, {});
-
-        console.log(filteredWinnersByYear);
-      },
-      error: (err) => console.error(err),
-    });
+    const movies$ = this.moviesService.getMovies(queryParams);
+    if (movies$) {
+      movies$.subscribe({
+        next: (res) => {
+          this.tableData = res;
+          this.filteredMovies = this.tableData.content;
+        },
+        error: (err) => console.error(err),
+      });
+    }
   }
+
 }

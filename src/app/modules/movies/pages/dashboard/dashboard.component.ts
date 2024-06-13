@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
     .set('winner', true)
     .set('year', this.filterByYearInput);
     this.moviesService.getMovies(queryParams).subscribe({
-      next: (res) => (this.tableData = res),
+      next: (res) => {(this.tableData = res), console.log(res, "RES")},
       error: (err) => console.error(err),
     });
   }

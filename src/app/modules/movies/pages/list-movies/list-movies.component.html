@@ -1,5 +1,7 @@
 <div class="row justify-content-center p-30">
-  <div class="col-8 shadow-sm p-3 mb-5 bg-white rounded shadow-sm p-3 mb-5 bg-white rounded">
+  <div
+    class="col-8 shadow-sm p-3 mb-5 bg-white rounded shadow-sm p-3 mb-5 bg-white rounded"
+  >
     <table class="table">
       <thead>
         <tr>
@@ -21,11 +23,11 @@
                 class="custom-select"
                 id="inputGroupSelect01"
                 [(ngModel)]="selectedShowWin"
-                (change)="filter()"
+                (change)="filter(); setPage(0)"
               >
-                <option [ngValue]="null" selected>Sim/Não</option>
-                <option [ngValue]="true">Sim</option>
-                <option [ngValue]="false">Não</option>
+                <option [ngValue]="''" selected>Sim/Não</option>
+                <option [ngValue]="'y'">Sim</option>
+                <option [ngValue]="'n'">Não</option>
               </select>
             </div>
           </th>
@@ -39,7 +41,6 @@
           <td>{{ item.winner ? "Yes" : "No" }}</td>
         </tr>
       </tbody>
-
     </table>
 
     <ul class="pagination">
@@ -48,12 +49,37 @@
           <span aria-hidden="true" (click)="setPage(0)">&laquo;</span>
         </a>
       </li>
-      <li class="page-item" *ngFor="let page of [].constructor(tableData?.totalPages); let index = index"><a class="page-link" (click)="setPage(index)">{{index + 1}}</a></li>
+      <li
+        class="page-item"
+        *ngFor="
+          let page of [].constructor(tableData?.totalPages);
+          let index = index
+        "
+      >
+        <a class="page-link" (click)="setPage(index)">{{ index + 1 }}</a>
+      </li>
       <li class="page-item">
         <a class="page-link" aria-label="Next">
-          <span aria-hidden="true" (click)="setPage(tableData.totalPages)">&raquo;</span>
+          <span aria-hidden="true" (click)="setPage(tableData.totalPages)"
+            >&raquo;</span
+          >
         </a>
       </li>
+      <div class="input-group mb-3">
+        <select
+        style="max-width: 70px"
+        class="custom-select"
+        id="inputGroupSelect01"
+        [(ngModel)]="itensPerpage"
+        (change)="filter(); setPage(0)"
+        >
+          <option [ngValue]="10" selected>10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="30">30</option>
+          <option [ngValue]="40">40</option>
+          <option [ngValue]="50">50</option>
+        </select>
+      </div>
     </ul>
   </div>
 </div>
