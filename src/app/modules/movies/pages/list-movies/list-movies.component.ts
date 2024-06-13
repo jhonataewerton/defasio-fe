@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { Subject, debounceTime, switchMap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { Movie } from 'src/app/models/movie.model';
 import { Movies } from 'src/app/models/movies.model';
 import { MoviesService } from 'src/app/services/movies.service';
@@ -10,7 +10,9 @@ import { MoviesService } from 'src/app/services/movies.service';
   templateUrl: './list-movies.component.html',
   styleUrls: ['./list-movies.component.scss'],
 })
-export class ListMoviesComponent implements OnInit {
+export class ListMoviesComponent implements OnInit, OnDestroy {
+  private readonly destroy$: Subject<void> = new Subject();
+
   selectedShowWin: string = '';
   filterByYearInput: string = '';
   page: number = 0;
@@ -42,6 +44,7 @@ export class ListMoviesComponent implements OnInit {
           return this.moviesService.getMovies(queryParams);
         })
       )
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => (this.tableData = res),
         error: (err) => console.error(err),
@@ -70,7 +73,9 @@ export class ListMoviesComponent implements OnInit {
     let queryParams = new HttpParams().set('page', '0').set('size', '10');
     const movies$ = this.moviesService.getMovies(queryParams);
     if (movies$) {
-      movies$.subscribe({
+      movies$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
         next: (res) => {
           this.tableData = res;
           this.filteredMovies = this.tableData.content;
@@ -80,4 +85,8 @@ export class ListMoviesComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
