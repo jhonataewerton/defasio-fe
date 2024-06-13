@@ -10,9 +10,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of dataFilterByWinnerYear">
-            <th scope="row">{{ item.ano }}</th>
-            <td>{{ item.winners }}</td>
+          <tr *ngFor="let item of dataFilterByWinnerYear?.years">
+            <th scope="row">{{ item.year }}</th>
+            <td>{{ item.winnerCount }}</td>
           </tr>
         </tbody>
       </table>
@@ -31,8 +31,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of top3Studios">
-            <th scope="row">{{ item.studio }}</th>
-            <td>{{ item.wins }}</td>
+            <th scope="row">{{ item.name }}</th>
+            <td>{{ item.winCount }}</td>
           </tr>
         </tbody>
       </table>
@@ -53,11 +53,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ producerWithMaxInterval?.producer }}</td>
-            <td>{{ producerWithMaxInterval?.interval }}</td>
-            <td>{{ producerWithMaxInterval?.previousYear }}</td>
-            <td>{{ producerWithMaxInterval?.followingYear }}</td>
+          <tr *ngFor="let max of moviesInterval?.max">
+            <td>{{ max?.producer }}</td>
+            <td>{{ max?.interval }}</td>
+            <td>{{ max?.previousWin }}</td>
+            <td>{{ max?.followingWin }}</td>
           </tr>
         </tbody>
       </table>
@@ -73,11 +73,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ producerWithMinInterval?.producer }}</td>
-            <td>{{ producerWithMinInterval?.interval }}</td>
-            <td>{{ producerWithMinInterval?.previousYear }}</td>
-            <td>{{ producerWithMinInterval?.followingYear }}</td>
+          <tr *ngFor="let min of moviesInterval?.min">
+            <td>{{ min?.producer }}</td>
+            <td>{{ min?.interval }}</td>
+            <td>{{ min?.previousWin }}</td>
+            <td>{{ min?.followingWin }}</td>
           </tr>
         </tbody>
       </table>
